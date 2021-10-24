@@ -34,4 +34,22 @@ roteador.get('/:idFornecedor', async (requisicao, resposta) => {
     }
 })
 
+roteador.put('/:idFornecedor', async (requisicao, resposta) => {
+    try{
+        const id = requisicao.params.idFornecedor
+        const dadosRecebidos = requisicao.body
+        const dados = Object.assign({}, dadosRecebidos, { id })
+
+        const fornecedor = new Fornecedor(dados)
+
+        await fornecedor.atualizar()
+
+        resposta.end()
+    }catch(err){
+        resposta.send(JSON.stringify({
+            mensagem: err.message
+        }))
+    }
+})
+
 module.exports = roteador
