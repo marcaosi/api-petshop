@@ -4,19 +4,31 @@ const Fornecedor = require("./Fornecedor")
 
 roteador.get('/', async (requisicao, resposta) => {
     const resultados = await TabelaFornecedor.listar()
+    resposta.status(200)
     resposta.send(
         JSON.stringify(resultados)
     )
 })
 
 roteador.post('/', async (requisicao, resposta) => {
-    const dadosRecebidos = requisicao.body
+    try{
+        const dadosRecebidos = requisicao.body
 
-    const fornecedor = new Fornecedor(dadosRecebidos)
+        const fornecedor = new Fornecedor(dadosRecebidos)
 
-    await fornecedor.criar()
+        await fornecedor.criar()
 
-    resposta.send(JSON.stringify(fornecedor))
+        resposta.status(201)
+
+        resposta.send(JSON.stringify(fornecedor))
+    }catch(err){
+        resposta.status(400)
+        resposta.send(JSON.stringify(
+            {
+                mensagem: err.message
+            }
+        ))
+    }
 })
 
 roteador.get('/:idFornecedor', async (requisicao, resposta) => {
@@ -26,8 +38,10 @@ roteador.get('/:idFornecedor', async (requisicao, resposta) => {
 
         await fornecedor.carregar()
 
+        resposta.status(200)
         resposta.send(JSON.stringify(fornecedor))
     }catch(err){
+        resposta.status(404)
         resposta.send(JSON.stringify({
             mensagem: err.message
         }))
@@ -44,8 +58,28 @@ roteador.put('/:idFornecedor', async (requisicao, resposta) => {
 
         await fornecedor.atualizar()
 
+        resposta.status(204)
         resposta.end()
     }catch(err){
+        resposta.status(400)
+        resposta.send(JSON.stringify({
+            mensagem: err.message
+        }))
+    }
+})
+
+roteador.delete('/:idFornecedor', async (requisicao, resposta) => {
+    try{
+        const id = requisicao.params.idFornecedor
+        const fornecedor = new Fornecedor({ id })
+
+        await fornecedor.carregar()
+        await fornecedor.remover()
+
+        resposta.status(204)
+        resposta.end()
+    }catch(err){
+        resposta.status(404)
         resposta.send(JSON.stringify({
             mensagem: err.message
         }))

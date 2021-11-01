@@ -29,5 +29,13 @@ module.exports = {
                 id
             }
         })
+    },
+
+    remover(id){
+        return Modelo.destroy({
+            where: {
+                id
+            }
+        })
     }
 }
