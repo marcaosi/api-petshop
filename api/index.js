@@ -2,8 +2,25 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const config = require('config')
+const formatosAceitos = require('./Serializador').formatosAceitos
 
 app.use(bodyParser.json())
+
+app.use((requisicao, resposta, proximo) => {
+    let formatoRequisitado = requisicao.header('Accept')
+
+    if(formatoRequisitado === '*/*'){
+        formatoRequisitado = 'application/json'
+    }
+
+    if(formatosAceitos.indexOf(formatoRequisitado) === -1){
+        resposta.status(406)
+        resposta.end()
+    }else{
+        resposta.setHeader('Content-Type', formatoRequisitado)
+        proximo()
+    }
+})
 
 const roteador = require('./rotas/fornecedores')
 const NaoEncontrado = require('./erros/NaoEncontrado')
