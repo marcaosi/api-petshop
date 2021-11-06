@@ -4,6 +4,11 @@ const bodyParser = require('body-parser')
 const config = require('config')
 const formatosAceitos = require('./Serializador').formatosAceitos
 const SerializadorErro = require('./Serializador').SerializadorErro
+const NaoEncontrado = require('./erros/NaoEncontrado')
+const CampoInvalido = require('./erros/CampoInvalido')
+const DadosNaoFornecidos = require('./erros/DadosNaoFornecidos')
+const ValorNaoSuportado = require('./erros/ValorNaoSuportado')
+const roteador = require('./rotas/fornecedores')
 
 app.use(bodyParser.json())
 
@@ -23,11 +28,8 @@ app.use((requisicao, resposta, proximo) => {
     }
 })
 
-const roteador = require('./rotas/fornecedores')
-const NaoEncontrado = require('./erros/NaoEncontrado')
-const CampoInvalido = require('./erros/CampoInvalido')
-const DadosNaoFornecidos = require('./erros/DadosNaoFornecidos')
-const ValorNaoSuportado = require('./erros/ValorNaoSuportado')
+
+
 
 app.use('/api/fornecedores', roteador)
 
