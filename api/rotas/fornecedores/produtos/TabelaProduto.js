@@ -5,7 +5,8 @@ module.exports = {
         return Modelo.findAll({
             where: {
                 fornecedor: idFornecedor
-            }
+            },
+            raw: true // traz os valores em JS puro e não obj do sequelize
         })
     },
     inserir(dados){
