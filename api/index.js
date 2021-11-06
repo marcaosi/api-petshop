@@ -35,6 +35,9 @@ app.use((requisicao, resposta, proximo) => {
 
 app.use('/api/fornecedores', roteador)
 
+const roteadorv2 = require('./rotas/fornecedores/rotas.v2')
+app.use('/api/v2/fornecedores', roteadorv2)
+
 app.use((err, requisicao, resposta, proximo) => {
     let status = 500
     
