@@ -28,9 +28,6 @@ app.use((requisicao, resposta, proximo) => {
     }
 })
 
-
-
-
 app.use('/api/fornecedores', roteador)
 
 app.use((err, requisicao, resposta, proximo) => {
