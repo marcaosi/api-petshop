@@ -28,6 +28,11 @@ app.use((requisicao, resposta, proximo) => {
     }
 })
 
+app.use((requisicao, resposta, proximo) => {
+    resposta.set('Access-Control-Allow-Origin', '*')
+    proximo()
+})
+
 app.use('/api/fornecedores', roteador)
 
 app.use((err, requisicao, resposta, proximo) => {
